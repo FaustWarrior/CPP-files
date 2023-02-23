@@ -1,0 +1,117 @@
+/*Develop an object oriented program in C++ to create a database of student information
+system containing the following information: Name, Roll number, Class, division, Date of
+Birth, Blood group, Contact address, telephone number, driving license no. and other.
+Construct the database with suitable member functions for initializing and destroying the
+data viz constructor, default constructor, Copy constructor, destructor, static member
+functions, friend class, this pointer, inline code and dynamic memory allocation
+operators-new and delete. */
+
+#include <iostream>
+#include <string.h>
+#include <iomanip>
+using namespace std;
+
+class StudentDatabase
+{
+public:
+    char Name[30];
+    int Roll_no;
+    char Class[3];
+    char Division[3];
+    static int stdno;
+    char DoB[8];
+    char bld_grp[3];
+    char telephone_no[14];
+    char drivng_licns[15];
+    char other[100];
+
+    StudentDatabase()
+    {
+        strcpy(Name, "Aditya Singh");
+        Roll_no = 1;
+        strcpy(Class, "SE");
+        strcpy(Division, "B");
+        strcpy(DoB, "06/07/2003");
+        strcpy(bld_grp, "B+ve");
+        strcpy(telephone_no, "9987092162");
+        strcpy(drivng_licns, "LICENSE");
+    }
+
+    static void count()
+    {
+        cout << "\nNo. of objects created:" << stdno;
+    }
+
+    void fin()
+    {
+        cout << "\nInline Function!";
+    }
+
+
+
+    StudentDatabase(StudentDatabase* ob)
+    {
+        strcpy(Name, ob->Name);
+        strcpy(DoB, ob->DoB);
+        strcpy(Class, ob->Class);
+        strcpy(Division, ob->Division);
+        strcpy(bld_grp, ob->bld_grp);
+        strcpy(telephone_no, ob->telephone_no);
+        strcpy(drivng_licns, ob->drivng_licns);
+        ++stdno;
+    }
+
+    void getdata()
+    {
+        cout << "\n\nEnter:Name,Roll no., Class, Division, Dob, Blood Group, Contact, Phone, License\n ";
+        cin >> Name >> Roll_no >> Class >> Division >> DoB >> bld_grp >> telephone_no >> drivng_licns;
+    }
+
+    friend void display(StudentDatabase d);
+
+    ~StudentDatabase()
+    {
+        cout << "\n\n" << this->stdno << "-" << this->Name << "(Object) is destroyed";
+    }
+
+};
+
+void display(StudentDatabase d)
+{
+    cout << "\n\nName:" << d.Name << "\nRoll No." << d.Roll_no << "\nClass:" << d.Class << "\nDivision" << d.Division << "\nDOB" << d.DoB << "\nBlood Group:" << d.bld_grp << "\nTelephone No." << d.telephone_no << "\nLicense" << d.drivng_licns << endl;
+}
+
+int StudentDatabase::stdno;
+
+int main()
+{
+    int n, i;
+    StudentDatabase d1, * ptr[5];
+    cout << "Default values:";
+    display(d1);
+
+    d1.getdata();
+    cout << endl;
+    display(d1);
+
+    StudentDatabase d2(&d1);
+    cout << "\n\nUse of copy constructor:";
+    display(d2);
+
+    cout << "\nHow many objects u want to create? ;";
+    cin >> n;
+
+    for (i = 0; i < n; i++)
+    {
+        display(*ptr[i]);
+    }
+
+    StudentDatabase::count();
+
+    for (i = 0; i < n; i++)
+    {
+        delete(ptr[i]);
+    }
+    cout << "\nObjects deleted";
+    return 0;
+}
